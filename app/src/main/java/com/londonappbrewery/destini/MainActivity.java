@@ -15,6 +15,15 @@ public class MainActivity extends AppCompatActivity {
     Button mButtonBottom;
     int mStoryIndex = 1;
 
+    final Stories[] mStory = new Stories[]{
+            new Stories(R.string.T1_Story, R.string.T1_Ans1, R.string.T1_Ans2),
+            new Stories(R.string.T2_Story, R.string.T2_Ans1, R.string.T2_Ans2),
+            new Stories(R.string.T3_Story, R.string.T3_Ans1, R.string.T3_Ans2),
+            new Stories(R.string.T4_End, R.string.Replay_Game, R.string.Quit),
+            new Stories(R.string.T5_End, R.string.Replay_Game, R.string.Quit),
+            new Stories(R.string.T6_End, R.string.Replay_Game, R.string.Quit)
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
             mStoryIndex = savedInstanceState.getInt("StoryIndex");
             Log.d("Destini","Restoring Bundle. Setting mStoryIndex to " + mStoryIndex);
         }
+        else {
+            mStoryIndex = 1;
+        }
 
         // Wire up the 3 views from the layout to the member variables:
         mStoryTextView = findViewById(R.id.storyTextView);
@@ -32,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         mButtonBottom = findViewById(R.id.buttonBottom);
 
         // Initialise text
-        setDisplay();
+        setDisplay(mStoryIndex);
 
         // Set a listener on the top button:
         mButtonTop.setOnClickListener(new View.OnClickListener() {
@@ -45,28 +57,24 @@ public class MainActivity extends AppCompatActivity {
                         // Story 1 and 2 Top Button both move to Story 3.
                         // Fall through.
                     case 2:
-                        mStoryIndex = 3;
-                        setDisplay();
+                        setDisplay(3);
                         break;
 
                     case 3:
                         // Top button results in Ending 6
-                        mStoryIndex = 6;
-
-                        setDisplay();
+                        setDisplay(6);
                         break;
 
                     case 4:
                     case 5:
                     case 6:
                         // Reset the game
-                        mStoryIndex = 1;
-                        setDisplay();
+                        setDisplay(1);
                         break;
 
                     default:
                         // Should never reach here
-                        Log.d("Destini","Reached unreachable Top Button default case!");
+                        Log.d("Destini","Reached unreachable Top Button default case! mStoryIndex == " + mStoryIndex);
                         break;
                 }
             }
@@ -80,19 +88,16 @@ public class MainActivity extends AppCompatActivity {
 
                 switch(mStoryIndex){
                     case 1:
-                        mStoryIndex = 2;
-                        setDisplay();
+                        setDisplay(2);
                         break;
 
                     case 2:
-                        mStoryIndex = 4;
-                        setDisplay();
+                        setDisplay(4);
                         break;
 
                     case 3:
                         // Bottom button results in ending 5
-                        mStoryIndex = 5;
-                        setDisplay();
+                        setDisplay(5);
                         break;
 
                     case 4:
@@ -103,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
                     default:
                         // Should never reach here
-                        Log.d("Destini","Reached unreachable Top Button default case!");
+                        Log.d("Destini","Reached unreachable Top Button default case! mStoryIndex == " + mStoryIndex);
                         break;
                 }
 
@@ -111,56 +116,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setDisplay() {
+    private void setDisplay(int newStoryIndex) {
 
-        Log.d("Destini","Setting Story to Index - " + mStoryIndex);
+        Log.d("Destini", "Setting Story to Index - " + newStoryIndex );
 
-        switch (mStoryIndex) {
-            case 1:
-                mStoryTextView.setText(R.string.T1_Story);
-                mButtonTop.setText(R.string.T1_Ans1);
-                mButtonBottom.setText(R.string.T1_Ans2);
-                break;
+        mStoryIndex = newStoryIndex ;
 
-            case 2:
-                mStoryTextView.setText(R.string.T2_Story);
-                mButtonTop.setText(R.string.T2_Ans1);
-                mButtonBottom.setText(R.string.T2_Ans2);
-                break;
-
-            case 3:
-                mStoryTextView.setText(R.string.T3_Story);
-                mButtonTop.setText(R.string.T3_Ans1);
-                mButtonBottom.setText(R.string.T3_Ans2);
-                break;
-
-            case 4:
-                mStoryTextView.setText(R.string.T4_End);
-
-                // Display End Text
-                mButtonTop.setText(R.string.Replay_Game);
-                mButtonBottom.setText(R.string.Quit);
-                break;
-
-            case 5:
-                mStoryTextView.setText(R.string.T5_End);
-
-                // Display End Text
-                mButtonTop.setText(R.string.Replay_Game);
-                mButtonBottom.setText(R.string.Quit);
-                break;
-
-            case 6:
-                mStoryTextView.setText(R.string.T6_End);
-
-                // Display End Text
-                mButtonTop.setText(R.string.Replay_Game);
-                mButtonBottom.setText(R.string.Quit);
-                break;
-
-            default:
-                break;
-        }
+        mStoryTextView.setText(mStory[ mStoryIndex - 1].getStory());
+        mButtonTop.setText(mStory[ mStoryIndex - 1 ].getTopAnswer());
+        mButtonBottom.setText(mStory[ mStoryIndex -1 ].getBottomAnswer());
     }
 
     @Override
