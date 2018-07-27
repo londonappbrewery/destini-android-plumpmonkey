@@ -1,8 +1,32 @@
-.gradle
-/.idea/vcs.xml
-/local.properties
-.DS_Store
-/build
-/captures
-/.idea/workspace.xml
+# files for the dex VM
+*.dex
 
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# Android Studio
+*.iml
+.idea/*
+#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
+.gradle
+build/
+.navigation
+captures/
+output.json 
+
+#NDK
+obj/
+.externalNativeBuild
